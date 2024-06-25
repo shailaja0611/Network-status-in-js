@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network status in javascript</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+ <style>
+.wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.toast {
+    display: flex;
+    align-items: center;
+    background-color: hsl(216, 87%, 20%);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.toast.hide {
+    opacity: 0;
+    transform: translateX(100%);
+}
+.content {
+    display: flex;
+    align-items: center;
+}
+.icon {
+    margin-right: 10px;
+}
+.details {
+    margin-right: 20px;
+}
+.close-icon {
+   cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="toast hide">
+    <div class="content">
+        <div class="icon"><i id="icon" class="fa-solid fa-wifi"></i></div>
+            <div class="details">
+             <span id="status">You're online now</span>
+            <p id="message">Hurry! Internet is connected.</p>
+            </div>
+        </div>
+        <div class="close-icon"><i class="fa-regular fa-circle-xmark"></i></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toast = document.querySelector('.toast');
+        const closeIcon = document.querySelector('.close-icon');
+        const statusSpan = document.getElementById('status');
+        const messageP = document.getElementById('message');
+        const icon = document.getElementById('icon');
+
+    
+          const hideToast = () => {
+            toast.classList.add('hide');
+    };
+
+    
+     const showToast = (status, message, iconClass) => {
+     statusSpan.textContent = status;
+      messageP.textContent = message;
+      icon.className = iconClass;
+      toast.classList.remove('hide');
+       setTimeout(hideToast, 5000);
+        };
+         if (navigator.onLine) {
+            showToast("You're online now", "Hurry! Internet is connected.", "fa-solid fa-wifi");
+        } else {
+            showToast("You're offline now", "Oops! Internet is disconnected.", "fa-solid fa-exclamation-triangle");
+        }
+           window.addEventListener('online', () => {
+            showToast("You're online now", "Hurry! Internet is connected.", "fa-solid fa-wifi");
+        });
+
+            window.addEventListener('offline', () => {
+            showToast("You're offline now", "Oops! Internet is disconnected.", "fa-solid fa-exclamation-triangle");
+        });
+
+            closeIcon.addEventListener('click', hideToast);
+
+
+    });
+
+</script>
+
+</body>
+</html>
